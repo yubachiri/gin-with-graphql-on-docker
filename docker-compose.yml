@@ -4,10 +4,12 @@ services:
   go:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./docker/api/Dockerfile
       target: build
     volumes:
       - ./:/go/app
+    links:
+      - db
     command: air
     ports:
       - 8888:8888
@@ -17,3 +19,18 @@ services:
       - apparmor:unconfined
     cap_add:
       - SYS_PTRACE
+  db:
+    build: 
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    image: mysql:5.7
+    restart: always
+    env_file:
+      - ./docker/db/dbenv
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --skip-character-set-client-handshake
+    hostname: mysql
+    ports: 
+      - "3306:3306"
+    volumes:
+      - ./db:/etc/mysql
+      - ./log/mysql:/var/log/mysql

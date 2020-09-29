@@ -32,4 +32,6 @@ RUN set -x && \
   adduser -D -G go go && \
   chown -R go:go /app/m-share
 
+RUN touch /var/log/mysql/mysqld.log
+
 CMD ["./m-share"]
