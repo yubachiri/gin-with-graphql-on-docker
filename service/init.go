@@ -14,6 +14,7 @@ var DbEngine *xorm.Engine
 
 func init() {
 	driverName := "mysql"
+	// TODO: 本番に上げるときはここ変えとく必要がある 環境変数から読む？
 	DsName := "mysql:password@tcp(db:3306)/m-share"
 	err := errors.New("")
 	DbEngine, err = xorm.NewEngine(driverName, DsName)
