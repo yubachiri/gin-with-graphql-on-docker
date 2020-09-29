@@ -6,6 +6,7 @@ import (
 	"log"
 	"m-share/model"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
 )
 
@@ -13,7 +14,7 @@ var DbEngine *xorm.Engine
 
 func init() {
 	driverName := "mysql"
-	DsName := "root:root@(192.168.99.100:3306)/gin?charset=utf8"
+	DsName := "mysql:password@tcp(db:3306)/m-share"
 	err := errors.New("")
 	DbEngine, err = xorm.NewEngine(driverName, DsName)
 	if err != nil && err.Error() != "" {
