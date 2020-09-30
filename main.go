@@ -5,13 +5,19 @@ import (
 	"m-share/middleware"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 	engine := gin.Default()
 	// ミドルウェア
 	engine.Use(middleware.RecordUaAndTime)
+
+	engine.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "live",
+		})
+	})
+
 	// CRUD 書籍
 	bookEngine := engine.Group("/book")
 	{
@@ -23,5 +29,6 @@ func main() {
 			v1.DELETE("/delete", controller.BookDelete)
 		}
 	}
+
 	engine.Run(":3000")
 }
