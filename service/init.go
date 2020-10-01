@@ -4,6 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
+	"github.com/joho/godotenv"
+
 	"m-share/model"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -13,9 +16,18 @@ import (
 var DbEngine *xorm.Engine
 
 func init() {
+
+	envErr := godotenv.Load(fmt.Sprintf("./%s.env", os.Getenv("GO_ENV")))
+    if envErr != nil {
+				// .env読めなかった場合の処理
+				//log.Fatal("Error loading .env file")
+				fmt.Printf("%v\n", "読めてないウホ🦍")
+		}
+	env := os.Getenv("ENV")
+	fmt.Println(env)
+
 	driverName := "mysql"
-	// TODO: 本番に上げるときはここ変えとく必要がある 環境変数から読む？
-	DsName := "mysql:password@tcp(db:3306)/m-share"
+	DsName := os.Getenv("DSNAME")
 	err := errors.New("")
 	DbEngine, err = xorm.NewEngine(driverName, DsName)
 	if err != nil && err.Error() != "" {
