@@ -16,8 +16,7 @@ import (
 var DbEngine *xorm.Engine
 
 func init() {
-
-	envErr := godotenv.Load(fmt.Sprintf("./%s.env", os.Getenv("GO_ENV")))
+	envErr := godotenv.Load()
     if envErr != nil {
 				// .env読めなかった場合の処理
 				//log.Fatal("Error loading .env file")
@@ -27,7 +26,15 @@ func init() {
 	fmt.Println(env)
 
 	driverName := "mysql"
-	DsName := os.Getenv("DSNAME")
+
+	user := os.Getenv("DB_USER_NAME")
+	password := os.Getenv("DB_PASSWORD")
+	connectMethod := os.Getenv("DB_CONNECT_METHOD")
+	containerName := os.Getenv("DB_CONTAINER_NAME")
+	port := os.Getenv("DB_PORT")
+	name := os.Getenv("DB_NAME")
+	DsName := user + ":" + password + "@" + connectMethod + "(" + containerName + ":" + port + ")/" + name
+
 	err := errors.New("")
 	DbEngine, err = xorm.NewEngine(driverName, DsName)
 	if err != nil && err.Error() != "" {
