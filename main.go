@@ -1,34 +1,34 @@
 package main
 
 import (
-	"m-share/controller"
-	"m-share/middleware"
+	"log"
+	"m-share/graphql/queries"
+	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/graphql-go/graphql"
+	"github.com/graphql-go/handler"
 )
 
 func main() {
-	engine := gin.Default()
-	// ミドルウェア
-	engine.Use(middleware.RecordUaAndTime)
-
-	engine.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "live",
-		})
-	})
-
-	// CRUD 書籍
-	bookEngine := engine.Group("/book")
-	{
-		v1 := bookEngine.Group("/v1")
-		{
-			v1.POST("/add", controller.BookAdd)
-			v1.GET("/list", controller.BookList)
-			v1.PUT("/update", controller.BookUpdate)
-			v1.DELETE("/delete", controller.BookDelete)
-		}
+	hello := queries.Hello()
+	fields := graphql.Fields{
+		"hello": &hello,
 	}
 
-	engine.Run(":3000")
+	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}
+	schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
+	schema, err := graphql.NewSchema(schemaConfig)
+
+	if err != nil {
+		log.Fatalf("failed to create new schema, error: %v", err)
+	}
+
+	h := handler.New(&handler.Config{
+		Schema:   &schema,
+		Pretty:   true,
+		GraphiQL: true,
+	})
+
+	http.Handle("/graphql", h)
+	http.ListenAndServe(":3000", nil)
 }
