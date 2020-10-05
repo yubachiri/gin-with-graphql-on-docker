@@ -13,8 +13,10 @@ func main() {
 	hello := queries.Hello()
 	helloArg := queries.HelloArg()
 	fields := graphql.Fields{
-		"hello":    &hello,
-		"helloArg": &helloArg,
+		"hello":       &hello,
+		"helloArg":    &helloArg,
+		"helloVar":    &queries.HelloVar,
+		"helloVarArg": &queries.HelloVarArg,
 	}
 
 	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}

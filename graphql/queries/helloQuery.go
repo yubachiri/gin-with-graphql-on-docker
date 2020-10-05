@@ -18,6 +18,14 @@ func Hello() graphql.Field {
 	return field
 }
 
+// HelloVar HelloField
+var HelloVar graphql.Field = graphql.Field{
+	Type: graphql.String,
+	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+		return "var", nil
+	},
+}
+
 // HelloArg 動かない
 func HelloArg() graphql.Field {
 	field := graphql.Field{
@@ -28,6 +36,7 @@ func HelloArg() graphql.Field {
 			},
 		},
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+			fmt.Printf("%v\n", p)
 			idQuery, isOK := p.Args["id"].(string)
 			fmt.Printf(idQuery)
 			if isOK {
@@ -39,4 +48,25 @@ func HelloArg() graphql.Field {
 	}
 
 	return field
+}
+
+// HelloVarArg HelloField
+var HelloVarArg graphql.Field = graphql.Field{
+	Type:        graphql.String,
+	Description: "Print Arg",
+	Args: graphql.FieldConfigArgument{
+		"id": &graphql.ArgumentConfig{
+			Type: graphql.String,
+		},
+	},
+	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+		fmt.Printf("%v\n", p)
+		idQuery, isOK := p.Args["id"].(string)
+		fmt.Printf(idQuery)
+		if isOK {
+			return idQuery, nil
+		}
+
+		return "", nil
+	},
 }
