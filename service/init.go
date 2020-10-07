@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+
 	"github.com/joho/godotenv"
 
-	"m-share/model"
+	"app/model"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
@@ -17,11 +18,11 @@ var DbEngine *xorm.Engine
 
 func init() {
 	envErr := godotenv.Load()
-    if envErr != nil {
-				// .env読めなかった場合の処理
-				//log.Fatal("Error loading .env file")
-				fmt.Printf("%v\n", "読めてないウホ🦍")
-		}
+	if envErr != nil {
+		// .env読めなかった場合の処理
+		//log.Fatal("Error loading .env file")
+		fmt.Printf("%v\n", "DB connection error")
+	}
 	env := os.Getenv("ENV")
 	fmt.Println(env)
 

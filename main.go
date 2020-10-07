@@ -1,8 +1,8 @@
 package main
 
 import (
+	"app/graphql/queries"
 	"log"
-	"m-share/graphql/queries"
 	"net/http"
 
 	"github.com/graphql-go/graphql"
@@ -10,13 +10,9 @@ import (
 )
 
 func main() {
-	hello := queries.Hello()
-	helloArg := queries.HelloArg()
 	fields := graphql.Fields{
-		"hello":       &hello,
-		"helloArg":    &helloArg,
-		"helloVar":    &queries.HelloVar,
-		"helloVarArg": &queries.HelloVarArg,
+		"hello":        &queries.Hello,
+		"helloWithArg": &queries.HelloWithArg,
 	}
 
 	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: fields}

@@ -1,7 +1,7 @@
 package service
 
 import (
-	"m-share/model"
+	"app/model"
 )
 
 type BookService struct{}

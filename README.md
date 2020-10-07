@@ -1,11 +1,9 @@
-## 社内諸々レビューサービス m-share
-公共事業です
+# gin with GraphQL on Docker
 
-## 初回
+## 準備
 ```
 $ cp .env.example .env
 ```
-DB情報は変更なしで動くはず
 
 ## 起動
 ```
@@ -13,7 +11,7 @@ $ docker-compose build
 $ docker-compose up
 ```
 
-## 使ってるもの
+## 使っているもの
 - Go 1.15
 - [Gin](https://github.com/gin-gonic/gin) 1.6.3
 - MySQL 5.7

@@ -19,19 +19,19 @@ RUN set -eux && \
 ENV GO111MODULE on
 
 RUN set -eux && \
-  go build -o m-share main.go
+  go build -o app main.go
 
 FROM alpine:3.11
 
 WORKDIR /app
 
-COPY --from=build /go/app/m-share .
+COPY --from=build /go/app/app .
 
 RUN set -x && \
   addgroup go && \
   adduser -D -G go go && \
-  chown -R go:go /app/m-share
+  chown -R go:go /app/app
 
 RUN touch /var/log/mysql/mysqld.log
 
-CMD ["./m-share"]
+CMD ["./app"]
